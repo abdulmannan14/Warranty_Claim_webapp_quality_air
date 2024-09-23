@@ -1,0 +1,193 @@
+{% extends 'layouts/base.html' %}
+<!-- Load the django-tables2 tag -->
+{% load django_tables2 %}
+{% load static %}
+{% block title %} Maps {% endblock title %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-primary pb-6"
+         style="background-image: url('{% static "assets/img/NEW_QA_LOGO_2021.jpeg" %}')!important; margin-top: 0%; background-size: cover; background-position: center;">
+
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center py-4">
+                    <div class="col-lg-6 col-7">
+                        {#                        <h6 class="h2 text-white d-inline-block mb-0">Warranty Forms</h6>#}
+                        {#                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">#}
+                        {#                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">#}
+                        {#                                <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a>#}
+                        {#                                </li>#}
+                        {#                                                                <li class="breadcrumb-item"><a href="#">Main</a></li>#}
+                        {#                                <li class="breadcrumb-item active" aria-current="page">Warranty Forms</li>#}
+                        {#                            </ol>#}
+                        {#                        </nav>#}
+                    </div>
+                    <div class="col-lg-6 col-5 text-right" style="margin-top: 150px">
+                        {#                        <a href="#" class="btn btn-sm btn-neutral">D</a>#}
+                        {#                        <a href="{% url 'add-new-warranty-form' %}" class="btn btn-md btn-neutral"#}
+                        {#                           style="background: #fff3cd">+ADD</a>#}
+                    </div>
+                </div>
+                {% if user_type == 'admin' %}
+                    <a data-toggle="modal" data-target="#exportModal" class="btn float-right btn-md btn-neutral"
+                       style="background: #fff3cd; margin-left: 1%;">Export</a>
+                    <a href="{% url 'add-new-warranty-form' %}" class="btn float-right btn-md btn-neutral"
+                       style="background: #fff3cd">+ADD</a>
+                {% elif user_type == 'manager' %}
+                    <a data-toggle="modal" data-target="#exportModal" class="btn float-right btn-md btn-neutral"
+                       style="background: #fff3cd; margin-left: 1%;">Export</a>
+                    <a href="{% url 'add-new-warranty-form' %}" class="btn float-right btn-md btn-neutral"
+                       style="background: #fff3cd">+ADD</a>
+                {% elif user_type == 'user' %}
+                    <a data-toggle="modal" data-target="#exportModal" class="btn float-right btn-md btn-neutral"
+                       style="background: #fff3cd">Export</a>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div>
+        {#        <div class="row" style="background: #f8f8f8">#}
+        {#            <div class="col">#}
+        {#                {% if table %}#}
+        {#                    <!-- Render the table -->#}
+        {#                    {% render_table table %}#}
+        {#                {% else %}#}
+        {#                    <p>No warranty forms available.</p>#}
+        {#                {% endif %}#}
+        {#            </div>#}
+        {#        </div>#}
+        <div class="card shadow" style="overflow: hidden">
+            <div class="card-body" style="overflow: auto">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane active fade show" id="tabs-icons-text-1"
+                         role="tabpanel"
+                         aria-labelledby="tabs-icons-text-1-tab">
+                        {% render_table table %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+    <!-- Export Modal -->
+    <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exportModalLabel">Select Date Range</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Date Range Form -->
+                    <form id="dateRangeForm">
+                        <div class="form-group">
+                            <label for="startDate">Start Date</label>
+                            <input type="date" class="form-control" id="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">End Date</label>
+                            <input type="date" class="form-control" id="endDate" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="exportSubmit">Export</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#    {% include "includes/footer.html" %}#}
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get form and button elements
+            const exportSubmit = document.getElementById('exportSubmit');
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+
+            exportSubmit.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Get date values
+                const startDate = startDateInput.value;
+                const endDate = endDateInput.value;
+
+                // Basic validation: Check if dates are valid
+                if (!startDate || !endDate || startDate > endDate) {
+                    alert('Please select a valid date range.');
+                    return;
+                }
+
+
+                // Perform the export action (you can handle it via AJAX or form submission)
+                console.log(`Exporting data from ${startDate} to ${endDate}`);
+
+                // After processing the dates, you can trigger file export here (e.g., using AJAX)
+                // For demonstration, we just close the modal and log the dates
+                $('#exportModal').modal('hide');
+
+                // Example of how you might send an AJAX request
+
+                $.ajax({
+                    url: '{% url 'export-all-forms' %}',  // The URL for your export view
+                    type: 'GET',  // Or 'POST' depending on your implementation
+                    data: {
+                        start_date: startDate,
+                        end_date: endDate,
+                    },
+                    xhrFields: {
+                        responseType: 'blob'  // Handle binary data like files
+                    },
+                    success: function (data, status, xhr) {
+                        //give me code to download the file
+                        const disposition = xhr.getResponseHeader('Content-Disposition');
+                        {#let filename = "exported_data.csv";  // Default filename#}
+
+                        if (disposition && disposition.includes('attachment')) {
+                            const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                            const matches = filenameRegex.exec(disposition);
+                            if (matches != null && matches[1]) {
+                                filename = matches[1].replace(/['"]/g, '');
+                            }
+                        }
+                        const url = window.URL.createObjectURL(new Blob([data]));
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        a.remove();
+                    },
+                    error: function (error) {
+                        console.error('Export failed:', error);
+                    }
+                });
+
+            });
+        });
+    </script>
+
+
+
+{% endblock javascripts %}

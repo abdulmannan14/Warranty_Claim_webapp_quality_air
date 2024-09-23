@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .table-container {
+            margin: 20px 0;
+        }
+
+        .empty-text {
+            text-align: center;
+            font-style: italic;
+            color: #999;
+        }
+
+        .hover-highlight:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    {#    <h2>Warranty Form Table</h2>#}
+
+    <div class="table-container">
+        <!-- If no forms are available, show this text -->
+        <div class="empty-text" id="emptyText">There are no forms to display</div>
+
+        <!-- The Table -->
+        <table class="table table-striped table-hover" id="warrantyTable">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Claim Number</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Warranty Part</th>
+            </tr>
+            </thead>
+            <tbody id="tableBody">
+            <!-- Example Data (will be populated dynamically) -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Example data that might be provided by Django in real use
+    const tableData = [
+        {
+            id: 1,
+            claim_number: 'CN12345',
+            last_name: 'Doe',
+            first_name: 'John',
+            warranty_part: 'Battery'
+        },
+        {
+            id: 2,
+            claim_number: 'CN54321',
+            last_name: 'Smith',
+            first_name: 'Jane',
+            warranty_part: 'Screen'
+        }
+    ];
+
+    // Populating table rows dynamically
+    const tableBody = document.getElementById('tableBody');
+    const emptyText = document.getElementById('emptyText');
+
+    if (tableData.length === 0) {
+        emptyText.style.display = 'block';
+    } else {
+        emptyText.style.display = 'none';
+        tableData.forEach(item => {
+            const row = document.createElement('tr');
+            row.classList.add('hover-highlight');
+
+            row.innerHTML = `
+                <td><a href="/home/edit_form/${item.id}">${item.id}</a></td>
+                <td>${item.claim_number}</td>
+                <td>${item.last_name}</td>
+                <td>${item.first_name}</td>
+                <td>${item.warranty_part}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+</script>
+
+</body>
+</html>

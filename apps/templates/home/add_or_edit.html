@@ -1,0 +1,87 @@
+{% extends 'layouts/base.html' %}
+<!-- Load the django-tables2 tag -->
+{% load django_tables2 %}
+{% load static %}
+{#{% load crispy_forms_tags %}#}
+{% load widget_tweaks %}
+{% block title %} Maps {% endblock title %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-primary pb-6"
+         style="background-image: url('{% static "assets/img/NEW_QA_LOGO_2021.jpeg" %}')!important; margin-top: 0%; background-size: cover; background-position: center;">
+
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center py-4">
+                    <div class="col-lg-6 col-7">
+{#                        <h6 class="h2 text-white d-inline-block mb-0">Warranty Forms</h6>#}
+{#                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">#}
+{#                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">#}
+{#                                <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a>#}
+{#                                </li>#}
+                                {#                                <li class="breadcrumb-item"><a href="#">Main</a></li>#}
+{#                                <li class="breadcrumb-item active" aria-current="page">Warranty Forms</li>#}
+{#                            </ol>#}
+{#                        </nav>#}
+                    </div>
+                     <div class="col-lg-6 col-5 text-right" style="margin-top: 150px">
+                        {#                        <a href="#" class="btn btn-sm btn-neutral">D</a>#}
+{#                        <a href="{% url 'add-new-warranty-form' %}" class="btn btn-sm btn-neutral">+ADD</a>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div>
+        {#        <div class="row" style="background: #f8f8f8">#}
+        {#            <div class="col">#}
+        {#                {% if table %}#}
+        {#                    <!-- Render the table -->#}
+        {#                    {% render_table table %}#}
+        {#                {% else %}#}
+        {#                    <p>No warranty forms available.</p>#}
+        {#                {% endif %}#}
+        {#            </div>#}
+        {#        </div>#}
+        <div class="card shadow" style="overflow: hidden">
+            <div class="card-body" style="overflow: auto">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for field in form %}
+                            <div class="col-md-4">
+                                <div class="my-1">
+                                    <label class="form-label font-weight-bolder">{{ field.label }}</label>
+                                    {% render_field field|add_class:'input-group input-group-outline mb-2' %}
+                                    <small style="color: red">
+                                        {{ field.errors }}
+                                    </small>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    {% if new_job_post %}
+                        <button type="button" class="btn btn-secondary check-quantity">Check Quantity</button>
+                    {% endif %}
+
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+    {#    {% include "includes/footer.html" %}#}
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+
+
+{% endblock javascripts %}
