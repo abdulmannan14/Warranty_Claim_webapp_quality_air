@@ -21,7 +21,18 @@ from django.views.decorators.csrf import csrf_exempt
 @login_required(login_url="/login/")
 @csrf_exempt
 def index(request):
-    context = {'segment': 'index'}
+    user_all_forms = home_models.WarrantyForm.objects.all()
+    amount = home_utils.calculate_total_amount_of_this_year_forms(user_all_forms)
+    calculate_monthly_amount_for_chart = home_utils.calculate_monthly_amount_of_this_year_forms(user_all_forms)
+    calculate_monthly_quantity_for_chart = home_utils.calculate_monthly_quantity_of_this_year_forms(user_all_forms)
+    context = {'segment': 'index',
+               'submitted_amount': f'{amount.get("submitted_amount")}',
+               'paid_amount': f'{amount.get("paid_amount")}',
+               'non_paid_amount': f'{amount.get("non_paid_amount")}',
+               'total_forms': len(user_all_forms),
+               'chart_data_amount_wise': calculate_monthly_amount_for_chart,
+               'chart_data_quantity_wise': calculate_monthly_quantity_for_chart
+               }
 
     html_template = loader.get_template('home/index.html')
     return HttpResponse(html_template.render(context, request))
@@ -37,8 +48,8 @@ def my_forms(request):
                'user_type': request.user.type,
                'submitted_amount': f'{amount.get("submitted_amount")}',
                'paid_amount': f'{amount.get("paid_amount")}',
-               'non_paid_amount': f'{amount.get("non_paid_amount")}'
-
+               'non_paid_amount': f'{amount.get("non_paid_amount")}',
+               'submitted_amount_header': True
                }
     return render(request, 'home/table_view.html', context)
 

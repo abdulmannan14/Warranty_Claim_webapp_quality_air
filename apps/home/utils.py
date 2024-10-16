@@ -1,5 +1,9 @@
 from django.core.mail import send_mail
 from django.conf import settings
+from . import models as home_models
+from django.db.models import Sum, Count
+from django.db.models.functions import ExtractMonth
+from datetime import datetime
 
 
 def send_email_to_user(user, obj):
@@ -55,3 +59,34 @@ def calculate_total_amount_of_this_year_forms(user_all_forms):
     non_paid_amount = submitted_amount - paid_amount
     return {"submitted_amount": f'${submitted_amount}', "paid_amount": f'${paid_amount}',
             "non_paid_amount": f'${non_paid_amount}'}
+
+
+def calculate_monthly_amount_of_this_year_forms(forms):
+    current_year = datetime.now().year
+    monthly_amount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    monthly_amounts = (
+        forms.filter(claim_paid_date__year=current_year)  # Filter for current year
+        .annotate(month=ExtractMonth('claim_paid_date'))  # Extract the month from the created_at field
+        .values('month')  # Group by month
+        .annotate(total_amount=Sum('amount_paid'))  # Sum the amounts for each month
+        .order_by('month')  # Order by month (optional)
+    )
+    for amount in monthly_amounts:
+        monthly_amount[amount['month'] - 1] = (int(amount['total_amount'])) if amount['total_amount'] > 0 else 0
+    return monthly_amount
+
+
+def calculate_monthly_quantity_of_this_year_forms(forms):
+    print("total form=====", forms.count())
+    current_year = datetime.now().year
+    monthly_quantity = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    monthly_quantities = (
+        forms.filter(claim_submission_date__year=current_year)  # Filter for current year
+        .annotate(month=ExtractMonth('claim_submission_date'))  # Extract the month from the created_at field
+        .values('month')  # Group by month
+        .annotate(form_count=Count('id'))  # Sum the amounts for each month
+        .order_by('month')  # Order by month (optional)
+    )
+    for quantity in monthly_quantities:
+        monthly_quantity[quantity['month'] - 1] = quantity['form_count']
+    return monthly_quantity
