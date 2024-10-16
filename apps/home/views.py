@@ -10,13 +10,16 @@ from django.template import loader
 from django.urls import reverse
 from django.contrib import messages
 from django.shortcuts import redirect, render
+
 from . import models as home_models
 from . import tables as home_tables
 from . import forms as home_forms
 from . import utils as home_utils
+from django.views.decorators.csrf import csrf_exempt
 
 
 @login_required(login_url="/login/")
+@csrf_exempt
 def index(request):
     context = {'segment': 'index'}
 
@@ -28,9 +31,15 @@ def index(request):
 def my_forms(request):
     user_all_forms = home_models.WarrantyForm.objects.all()
     table = home_tables.WarrantyFormTable(user_all_forms)
+    amount = home_utils.calculate_total_amount_of_this_year_forms(user_all_forms)
     context = {'segment': 'index',
                'table': table,
-               'user_type': request.user.type}
+               'user_type': request.user.type,
+               'submitted_amount': f'{amount.get("submitted_amount")}',
+               'paid_amount': f'{amount.get("paid_amount")}',
+               'non_paid_amount': f'{amount.get("non_paid_amount")}'
+
+               }
     return render(request, 'home/table_view.html', context)
 
 

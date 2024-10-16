@@ -17,6 +17,9 @@
                 </button>
             </form>
             <!-- Navbar links -->
+            {% if amount %}
+                <h1 style="color: white">Total Amount this Year: {{ amount }}</h1>
+            {% endif %}
             <ul class="navbar-nav align-items-center  ml-md-auto ">
                 <li class="nav-item d-xl-none">
                     <!-- Sidenav toggler -->

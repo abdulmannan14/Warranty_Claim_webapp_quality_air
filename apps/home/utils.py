@@ -37,3 +37,21 @@ def export_all_forms(start_date, end_date):
         return response
 
     return False, "Invalid Date Range"
+
+
+def calculate_total_amount_of_this_year_forms(user_all_forms):
+    import datetime
+    current_year = datetime.datetime.now().year
+    submitted_amount = 0
+    paid_amount = 0
+    non_paid_amount = 0
+    for form in user_all_forms:
+        try:
+            if form.claim_paid_date.year == current_year:
+                submitted_amount += form.amount_submitted
+                paid_amount += form.amount_paid
+        except:
+            pass
+    non_paid_amount = submitted_amount - paid_amount
+    return {"submitted_amount": f'${submitted_amount}', "paid_amount": f'${paid_amount}',
+            "non_paid_amount": f'${non_paid_amount}'}

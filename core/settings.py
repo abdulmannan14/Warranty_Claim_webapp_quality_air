@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'apps.home',  # Enable the inner home (home)
     'django_tables2',
     'widget_tweaks',
+    'import_export',
 ]
 
 MIDDLEWARE = [
