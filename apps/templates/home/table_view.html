@@ -49,30 +49,22 @@
         </div>
     </div>
     <!-- Page content -->
+    <!-- Page content -->
     <div>
-        {#        <div class="row" style="background: #f8f8f8">#}
-        {#            <div class="col">#}
-        {#                {% if table %}#}
-        {#                    <!-- Render the table -->#}
-        {#                    {% render_table table %}#}
-        {#                {% else %}#}
-        {#                    <p>No warranty forms available.</p>#}
-        {#                {% endif %}#}
-        {#            </div>#}
-        {#        </div>#}
         <div class="card shadow" style="overflow: hidden">
-            <div class="card-body" style="overflow: auto">
+            <div class="card-body" style="overflow: hidden"> <!-- Removed 'auto' from here -->
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane active fade show" id="tabs-icons-text-1"
                          role="tabpanel"
                          aria-labelledby="tabs-icons-text-1-tab">
-                        {% render_table table %}
+                        <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                            <!-- Added a fixed height -->
+                            {% render_table table %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
     </div>
 
 
