@@ -63,6 +63,7 @@ def add_new_warranty_forms(request):
         if form.is_valid():
             obj = form.save()
         if request.FILES:
+            print("endtereerererer==er=r=re==er=re=re=", request.FILES)
             obj.invoice_file = request.FILES['invoice_file']
         obj.user = request.user
         obj.save()

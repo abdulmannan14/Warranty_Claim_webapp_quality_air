@@ -15,6 +15,6 @@ urlpatterns = [
     path('export_all_forms', views.export_all_forms, name='export-all-forms'),
 
     # Matches any html file
-    re_path(r'^.*\.*', views.pages, name='pages'),
+    # re_path(r'^.*\.*', views.pages, name='pages'),
 
 ]

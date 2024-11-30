@@ -53,7 +53,7 @@ class WarrantyForm(models.Model):
     amount_paid = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     submitted_by = models.CharField(max_length=100, null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
-    invoice_file = models.FileField(upload_to='invoices/', null=True, blank=True)
+    invoice_file = models.FileField(upload_to='media/invoices/', null=True, blank=True)
     warranty_type = models.CharField(max_length=100, choices=warranty_type_choices, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     creation_time = models.DateField(auto_now_add=True)

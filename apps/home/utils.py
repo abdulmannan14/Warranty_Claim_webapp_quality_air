@@ -10,8 +10,9 @@ def send_email_to_user(user, obj):
     subject = 'Thank you for submitting the warranty form'
     message = f' The warranty claim for {obj.Last_Name} {obj.First_Name} has been submitted.'
     email_from = settings.EMAIL_HOST_USER
-    recipient_list = [user.email]
+    recipient_list = [user.email, ]
     send_mail(subject, message, email_from, recipient_list)
+    # pass
 
 
 def export_all_forms(start_date, end_date):
