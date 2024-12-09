@@ -18,7 +18,7 @@ SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_1122')
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 # load production server from .env
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', config('SERVER', default='127.0.0.1'), '170.64.185.190', '*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', config('SERVER', default='127.0.0.1'), '*']
 
 # Application definition
 
@@ -122,7 +122,7 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = (
     os.path.join(CORE_DIR, 'apps/static'),
 )
-X_FRAME_OPTIONS = 'ALLOW-FROM http://170.64.185.190:8501/'
+X_FRAME_OPTIONS = 'ALLOW-FROM http://69.55.59.68:8000/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
