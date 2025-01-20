@@ -122,14 +122,14 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = (
     os.path.join(CORE_DIR, 'apps/static'),
 )
-X_FRAME_OPTIONS = 'ALLOW-FROM http://69.55.59.68:8000/'
+X_FRAME_OPTIONS = 'ALLOW-FROM http://69.55.59.68:8000/,localhost:8000'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'mannanmaan1425@gmail.com'
-EMAIL_HOST_PASSWORD = 'oxikyfhidhiotat'
+EMAIL_HOST_PASSWORD = 'cvmr ycag rreb jwhm'
 DEFAULT_FROM_EMAIL = 'mannanmaan1425@gmail.com'
 
 #############################################################
